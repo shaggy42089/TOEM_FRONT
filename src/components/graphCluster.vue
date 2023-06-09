@@ -1,5 +1,5 @@
 <script setup>
-    import graph from './graph.vue'
+    import curve from './curve.vue'
     import {ref} from 'vue'
 
     function getRandomInt(max) {
@@ -11,12 +11,13 @@
         let mesures = []
         let nbMes = getRandomInt(15) + 5;
         for (let j = 0; j<nbMes; ++j) {
-            mesures.push({id:j, content:getRandomInt(100)/10})
+            mesures.push({id:j, val:getRandomInt(100)/10, time:j/10})
         }
         randomData.push({
             id:i,
             name:"machine "+i,
-            unit:"volt",
+            Yunit:"volt",
+            Xunit:"time",
             records:mesures
         })
     }
@@ -26,10 +27,10 @@
 
 <template>
     <div class="cluster">
-        <graph v-for="item in datas"
+        <curve v-for="item in datas"
             :graphData="item"
             :key="item.id">
-        </graph>
+    </curve>
     </div>
 </template>
 
@@ -38,8 +39,9 @@
         margin-top: 20px;
         margin-bottom: 20px;
         display: flex;
+        flex-direction: row;
         flex-wrap: wrap;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: start;
     }
 </style>

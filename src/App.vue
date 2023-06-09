@@ -12,7 +12,3 @@
     <graphCluster />
   </main>
 </template>
-
-<style scoped>
-
-</style>
