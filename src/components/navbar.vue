@@ -1,10 +1,10 @@
 <template>
     <nav class="navbar navbar-expand-lg d-block p-0">
-        <div class="flex-row-between">
+        <div class="flex-row-between ps-4 pe-5">
             <span>
-                <a class="link" href="">hello</a>
+                <a class="link fs-2 fw-semibold" href="">TOEM</a>
             </span>
-            <ul class="flex-row-between">
+            <ul class="flex-row-between d-flex p-0 m-0">
                 <li><a class="link" href="">Add source</a></li>
                 <li><a class="link" href="">Add script</a></li>
                 <li><a class="link" href="">Contact</a></li>
@@ -14,9 +14,10 @@
 </template>
 
 <style scoped>
-    .flex-row-btween {
+    .flex-row-between {
         display: flex;
         flex-direction: row;
+        align-items: center;
         justify-content: space-between;
     }
 
@@ -26,7 +27,6 @@
         background-color: #0984e3;
         position:sticky;
         border-radius: 0 0 5px 5px;
-        margin: 0 auto;
         display: flex;
         flex-direction: row;
         justify-content: space-between;

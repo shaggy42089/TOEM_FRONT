@@ -9,6 +9,7 @@
     "compile:sass": "node-sass src/assets/sass/main.scss src/assets/css/main.css "
   },
   "dependencies": {
+    "bootstrap-icons": "^1.10.5",
     "chart.js": "^4.3.0",
     "vue": "^3.3.2",
     "vue-chartjs": "^5.2.0"
@@ -16,6 +17,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "node-sass": "^8.0.0",
+    "sass": "^1.63.3",
+    "sass-loader": "^13.3.2",
     "vite": "^4.3.5"
   }
 }
