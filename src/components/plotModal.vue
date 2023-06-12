@@ -1,6 +1,7 @@
 <script setup>
   const props = defineProps({
-    graphData: Object
+    graphData: Object,
+    sources: Object
   })
 </script>
 
@@ -27,11 +28,18 @@
 
       <hr>
         <form id="contactForm" class="container">
+        
           <div class="form-group row">
             <div class="form-floating mb-3">
                 <input class="form-control" id="title" type="text" placeholder="title" v-model="graphData.title" data-sb-validations="" />
                 <label class="ms-2" for="title">title</label>
             </div>
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text m-0" for="source">data source</label>
+            <select class="form-select" id="source" v-model="graphData.dataRecord.source">
+              <option v-for="source in sources" :value="source">{{ source.name }}</option>
+            </select>
           </div>
           <div class="form-group row">
             <div class="form-floating mb-3 col-6">

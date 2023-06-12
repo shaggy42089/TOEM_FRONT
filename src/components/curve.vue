@@ -1,6 +1,6 @@
 <script setup>
-import modal from './modal.vue';
-import {openModal} from './modal.vue';
+import modal from './plotModal.vue';
+import {openModal} from './plotModal.vue';
 import {
   Chart as ChartJS,
   Title,
@@ -13,34 +13,53 @@ import {
   Filler
 } from 'chart.js';
 import { Line } from 'vue-chartjs';
+import { hostStatuses } from './core/constants.vue';
 ChartJS.register(Filler, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend)
 
 const props = defineProps({
-    graphData: Object
+    graphData: Object,
+    sources: Object
 })    
 
 </script>
 
+<script>
+    export function hostStatusToColor(status) {
+        switch(status) {
+            case hostStatuses.RUNNING:
+                return "border-success"
+            case hostStatuses.OFFLINE:
+                return "border-danger"
+            case hostStatuses.IDLE:
+                return "border-warning"
+            case hostStatuses.STOPPED:
+                return "border-dark"
+            default:
+                return "border-danger"
+        }
+    }
+</script>
+
 <template>
-    <div :id="'chart-'+graphData.id" :class="'chart position-relative border ' + (graphData.isRunning ? 'border-success' : 'border-warning')">
+    <div :id="'chart-'+graphData.id" :class="'chart position-relative border ' + hostStatusToColor(graphData.dataRecord.source.status)">
         <span class="reset-button position-absolute top-0 end-0 p-1 pointer" :onclick="() => openModal(graphData.id)">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
                 <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
             </svg>
         </span>
-        <span class="reset-button position-absolute top-0 start-0 p-1 pointer" :onclick="() => graphData.records = []">
+        <span class="reset-button position-absolute top-0 start-0 p-1 pointer" :onclick="() => graphData.dataRecord.records = []">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
                 <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
             </svg>
         </span>
         <Line :data="{
-            labels: graphData.records.map(el => el.time),
+            labels: graphData.dataRecord.records.map(el => el.time),
             datasets: [{
                 label : graphData.title || graphData.name,
                 backgroundColor: graphData.fillColor || '#faacac',
                 borderColor: graphData.lineColor || '#f87979',
-                data: graphData.records.map(el => el.val),
+                data: graphData.dataRecord.records.map(el => el.val),
                 borderWidth: 1,
                 tension: 0.4,
                 fill: 'start'
@@ -58,26 +77,37 @@ const props = defineProps({
             },            
             scales: {
                 y: {
-                    min: graphData.Ymin,
-                    max: graphData.Ymax,
+                    min: Number(graphData.Ymin),
+                    max: Number(graphData.Ymax),
                     title: {
                         text: (graphData.Yunit || ''),
                         display: true
                     },
+                    ticks: {
+                        callback: (value, index, ticks) => {
+                            return '$' + value;
+                        }
+                    }
                 },
                 x: {
-                    min: graphData.Xmin,
-                    max: graphData.Xmax,
+                    min: Number(graphData.Xmin),
+                    max: Number(graphData.Xmax),
                     title: {
                         text: (graphData.Xunit || ''),
                         display: true
                     },
+                    ticks: {
+                        callback: (value, index, ticks) => {
+                            return '$' + value;
+                        }
+                    }
                 }
             }
         }"/>
     </div>
     <modal
         :graphData="graphData"
+        :sources="sources"
     ></modal>
 </template>
 
