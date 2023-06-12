@@ -28,7 +28,6 @@
 
       <hr>
         <form id="contactForm" class="container">
-        
           <div class="form-group row">
             <div class="form-floating mb-3">
                 <input class="form-control" id="title" type="text" placeholder="title" v-model="graphData.title" data-sb-validations="" />
