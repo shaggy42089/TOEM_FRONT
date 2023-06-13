@@ -12,7 +12,7 @@
     }
 
     export function getMockData() {
-        let randomData = []
+        let randomData = {}
 
         randomData.dataSources = [];
 
